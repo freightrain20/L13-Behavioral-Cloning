@@ -29,9 +29,9 @@ I load the data from the pickle file and then split it into training and validat
 
 After experimenting with transfer learning and my own designs, I settled on a modified version of Comma.ai's graph found at (https://github.com/commaai/research/blob/master/train_steering_model.py). The final architecture is:
 
-  1. Convolution layer with 16 8x8 filters, 4x4 skim, and ReLU activation
-  2. Convolution layer with 32 5x5 filters, 2x2 skim, and ReLU activation
-  3. Convolution layer with 64 5x5 filters, 2x2 skim, and ReLU activation
+  1. Convolution layer with 16 8x8 filters, 4x4 stride, and ReLU activation
+  2. Convolution layer with 32 5x5 filters, 2x2 stride, and ReLU activation
+  3. Convolution layer with 64 5x5 filters, 2x2 stride, and ReLU activation
   4. Flatten the features
   5. Dropout, 20%
   6. Fully connected layer with 512 nodes and ReLU activation
