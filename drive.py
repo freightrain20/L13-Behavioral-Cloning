@@ -21,8 +21,9 @@ app = Flask(__name__)
 model = None
 prev_image_array = None
 
+# Function which maps image pixel values to a -1 to 1 range to match training set format
 def normalize_grayscale(image_data):
-    return image_data / 255. - 0.5
+    return image_data / 127.5 - 1
 
 @sio.on('telemetry')
 def telemetry(sid, data):
@@ -36,13 +37,14 @@ def telemetry(sid, data):
     imgString = data["image"]
     image = Image.open(BytesIO(base64.b64decode(imgString)))
     image_array = np.asarray(image)
-    transformed_image_array = image_array[None, :, :, :]
+    # Resize the image to match training set dimensions
+    transformed_image_array = image_array[None, 60:, :, :]
     transformed_image_array = normalize_grayscale(transformed_image_array.astype(np.float32))
     # This model currently assumes that the features of the model are just the images. Feel free to change this.
     steering_angle = float(model.predict(transformed_image_array, batch_size=1))
     # The driving model currently just outputs a constant throttle. Feel free to edit this.
     throttle = 0.2
-    print(steering_angle, throttle, transformed_image_array[0])
+    print(steering_angle, throttle)
     send_control(steering_angle, throttle)
 
 
